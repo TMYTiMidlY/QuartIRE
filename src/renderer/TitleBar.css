@@ -1,0 +1,13 @@
+.title-bar {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+
+.title-bar button {
+  -webkit-app-region: no-drag;
+}
+
+.draggable {
+  -webkit-user-drag: element;
+  cursor: move;
+}

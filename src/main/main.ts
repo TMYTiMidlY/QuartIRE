@@ -1,19 +1,25 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
-/**
- * This module executes inside of electron's main process. You can start
- * electron renderer process from here and communicate with the other processes
- * through IPC.
- *
- * When running `npm run build` or `npm run build:main`, this file is compiled to
- * `./src/main.js` using webpack. This gives us some performance wins.
- */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  ipcMain,
+  session,
+  nativeImage,
+  protocol,
+  dialog,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+// import {
+//   setupTitlebar,
+//   attachTitlebarToWindow,
+// } from 'custom-electron-titlebar/main';
+// import { createTray } from './tray';
 
 class AppUpdater {
   constructor() {
@@ -25,11 +31,11 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
-});
+// ipcMain.on('ipc-example', async (event, arg) => {
+//   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
+//   console.log(msgTemplate(arg));
+//   event.reply('ipc-example', msgTemplate('pong'));
+// });
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -44,23 +50,22 @@ if (isDebug) {
 }
 
 const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS'];
+  // const installer = require('electron-devtools-installer');
+  // const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+  // const extensions = ['REACT_DEVELOPER_TOOLS'];
 
-  return installer
-    .default(
-      extensions.map((name) => installer[name]),
-      forceDownload
-    )
-    .catch(console.log);
+  // return installer
+  //   .default(
+  //     extensions.map((name) => installer[name]),
+  //     forceDownload
+  //   )
+  //   .catch(console.log);
+  return session.defaultSession.loadExtension(
+    'C:/Users/15863/AppData/Roaming/ReactDevTools'
+  );
 };
 
 const createWindow = async () => {
-  if (isDebug) {
-    await installExtensions();
-  }
-
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
     : path.join(__dirname, '../../assets');
@@ -69,11 +74,20 @@ const createWindow = async () => {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
+  const icon = nativeImage.createFromPath(getAssetPath('icon.ico'));
+
   mainWindow = new BrowserWindow({
     show: false,
     width: 1024,
     height: 728,
-    icon: getAssetPath('icon.png'),
+    icon,
+    frame: false,
+    titleBarStyle: 'hidden',
+    titleBarOverlay: true,
+    // titleBarOverlay: {
+    //   color: '#2f3241',
+    //   symbolColor: '#fff',
+    // },
     webPreferences: {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
@@ -81,7 +95,43 @@ const createWindow = async () => {
     },
   });
 
+  if (isDebug) {
+    await installExtensions();
+  }
+
   mainWindow.loadURL(resolveHtmlPath('index.html'));
+  // Add icons and context menus to the system's notification area.
+  // createTray(icon, mainWindow);
+
+  // When dom content loaded, send the icon to the renderer process.
+  mainWindow.webContents.on('did-finish-load', () => {
+    // mainWindow?.webContents.send('icon', icon.toDataURL());
+    mainWindow?.webContents.send('update-counter', 1);
+  });
+
+  ipcMain.on('set-title', (event, title) => {
+    console.log(title);
+    const win = BrowserWindow.fromWebContents(event.sender);
+    win?.setTitle(title);
+  });
+
+  ipcMain.on('counter-value', (_event, counter) => {
+    console.log(counter);
+  });
+
+  ipcMain.handle('open-file', async () => {
+    const { canceled, filePaths } = await dialog.showOpenDialog({
+      properties: ['openFile'],
+      filters: [{ name: 'Images', extensions: ['jpg', 'png', 'gif'] }],
+    });
+    if (!canceled) {
+      return filePaths[0];
+    }
+  });
+
+  const cachePath = app.getPath('temp');
+  console.log(cachePath);
+
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
@@ -124,14 +174,69 @@ app.on('window-all-closed', () => {
   }
 });
 
+// app.on('open-url', (event, url) => {
+//   event.preventDefault();
+//   console.log(url);
+// });
+// console.log(app.setAsDefaultProtocolClient('qtire'));
+
+// protocol.registerSchemesAsPrivileged([
+//   {
+//     scheme: 'qtire',
+//     privileges: {
+//       standard: true,
+//       secure: true,
+//       allowServiceWorkers: true,
+//       supportFetchAPI: true,
+//       corsEnabled: true,
+//     },
+//   },
+// ]);
+
+// const additionalData = { myKey: 'myValue' };
+// const gotTheLock = app.requestSingleInstanceLock(additionalData);
+
+// if (!gotTheLock) {
+//   app.quit();
+// } else {
+//   app.on(
+//     'second-instance',
+//     (event, commandLine, workingDirectory, additionalData) => {
+//       // 输出从第二个实例中接收到的数据
+//       console.log(event);
+//       console.log(commandLine);
+//       console.log(workingDirectory);
+//       console.log(additionalData);
+
+//       // 有人试图运行第二个实例，我们应该关注我们的窗口
+//       if (mainWindow) {
+//         if (mainWindow.isMinimized()) {
+//           mainWindow.restore();
+//         }
+//         mainWindow.focus();
+//       }
+//     }
+//   );
+
 app
   .whenReady()
   .then(() => {
     createWindow();
+
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) createWindow();
     });
+
+    // Quit when all windows are closed, except on macOS. There, it's common
+    // for applications and their menu bar to stay active until the user quits
+    // explicitly with Cmd + Q.
+    app.on('window-all-closed', () => {
+      if (process.platform !== 'darwin') {
+        app.quit();
+      }
+    });
   })
   .catch(console.log);
+// }

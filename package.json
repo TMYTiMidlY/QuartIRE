@@ -1,37 +1,27 @@
 {
-  "description": "A foundation for scalable desktop apps",
+  "description": "An integrated report editor",
   "keywords": [
     "electron",
-    "boilerplate",
     "react",
-    "typescript",
-    "ts",
-    "sass",
-    "webpack",
-    "hot",
-    "reload"
+    "editor",
+    "lab",
+    "report",
+    "experiment"
   ],
-  "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
+  "homepage": "https://github.com/TMYTiMidlY/QuartIRE#readme",
   "bugs": {
-    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
+    "url": "https://github.com/TMYTiMidlY/QuartIRE/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+    "url": "git+https://github.com/TMYTiMidlY/QuartIRE.git"
   },
-  "license": "MIT",
+  "license": "GPL-3.0",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "name": "TMYTiMidlY",
+    "email": "93774927+TMYTiMidlY@users.noreply.github.com",
+    "url": "https://qtire.cn"
   },
-  "contributors": [
-    {
-      "name": "Amila Welihinda",
-      "email": "amilajack@gmail.com",
-      "url": "https://github.com/amilajack"
-    }
-  ],
   "main": "./src/main/main.ts",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
@@ -95,12 +85,33 @@
     }
   },
   "dependencies": {
+    "@codemirror/autocomplete": "^6.8.0",
+    "@codemirror/language": "^6.8.0",
+    "@codemirror/state": "^6.2.1",
+    "@codemirror/view": "^6.13.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fontsource/roboto": "^5.0.3",
+    "@handsontable/react": "^12.4.0",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.13.5",
+    "codemirror": "^6.0.1",
+    "echarts": "^5.4.2",
+    "echarts-for-react": "^3.0.2",
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.8",
+    "electron-store": "^8.1.0",
     "electron-updater": "^5.3.0",
+    "handsontable": "^12.4.0",
+    "markdown-it": "^13.0.1",
+    "monaco-editor": "^0.39.0",
+    "monaco-editor-webpack-plugin": "^7.0.1",
+    "portfinder": "^1.0.32",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.11.2"
+    "react-router-dom": "^6.11.2",
+    "ws": "^8.13.0"
   },
   "devDependencies": {
     "@electron/notarize": "^1.2.3",
@@ -111,8 +122,11 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^29.5.2",
+    "@types/markdown-it": "^12.2.3",
+    "@types/material-ui": "^0.21.12",
     "@types/node": "20.2.5",
     "@types/react": "^18.2.8",
+    "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-dom": "^18.2.4",
     "@types/react-test-renderer": "^18.0.0",
     "@types/terser-webpack-plugin": "^5.0.4",
@@ -122,6 +136,7 @@
     "browserslist-config-erb": "^0.0.3",
     "chalk": "^4.1.2",
     "concurrently": "^8.1.0",
+    "copy-webpack-plugin": "^11.0.0",
     "core-js": "^3.30.2",
     "cross-env": "^7.0.3",
     "css-loader": "^6.8.1",
@@ -170,10 +185,18 @@
     "webpack-merge": "^5.9.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "QuartIRE",
+    "appId": "cn.qtire.QuartIRE",
+    "protocols": {
+      "name": "QuartIRE",
+      "schemes": [
+        "qtire"
+      ]
+    },
     "asar": true,
-    "asarUnpack": "**\\*.{node,dll}",
+    "asarUnpack": [
+      "**\\*.{node,dll}"
+    ],
     "files": [
       "dist",
       "node_modules",
@@ -210,8 +233,10 @@
     },
     "win": {
       "target": [
-        "nsis"
-      ]
+        "nsis",
+        "portable"
+      ],
+      "icon": "assets/icon.ico"
     },
     "linux": {
       "target": [
@@ -231,10 +256,18 @@
       "provider": "github",
       "owner": "electron-react-boilerplate",
       "repo": "electron-react-boilerplate"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "installerHeaderIcon": "assets/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "QuartIRE"
     }
-  },
-  "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
   },
   "devEngines": {
     "node": ">=14.x",
