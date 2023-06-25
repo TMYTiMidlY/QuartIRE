@@ -1,10 +1,6 @@
 import { useRef } from 'react';
 import { Box } from '@mui/material';
 
-// import {
-//   parse,
-//   HtmlGenerator,
-// } from '../../node_modules/latex.js/dist/latex.js';
 import { parse, HtmlGenerator } from 'latex.js';
 import '../../node_modules/latex.js/dist/css/katex.css';
 import '../../node_modules/latex.js/dist/css/article.css';
