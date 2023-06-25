@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { CssBaseline, Button, Stack } from '@mui/material';
 
 import TitleBar from './TitleBar';
-import MainStack from './Main';
+import ResizeableStack from './Resizeable';
 
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
@@ -21,7 +21,7 @@ root.render(
     <CssBaseline enableColorScheme />
     <Stack height="100vh">
       <TitleBar />
-      <MainStack />
+      <ResizeableStack />
     </Stack>
     {/* <Editor code='12'/> */}
     {/* <Button id='open-file' onclick={handleClick}>Open File</Button> */}

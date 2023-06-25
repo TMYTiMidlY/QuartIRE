@@ -16,7 +16,7 @@ class CalmResizeObserver extends ResizeObserver {
 }
 window.ResizeObserver = CalmResizeObserver;
 
-export default function MainStack() {
+export default function ResizeableStack() {
   const [width, setWidth] = useState(0.5);
   const [code, setCode] = useState<string>('\\documentclass{article}\n\\begin{document}\n\tHello, world!\\[\\int_{0}^{\\pi}\\sin x\\]\n\\end{document}');
 
