@@ -1,9 +1,9 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { CssBaseline, Button, Stack } from '@mui/material';
-import App from './App';
+
 import TitleBar from './TitleBar';
-import Editor from './Editor';
+import MainStack from './Main';
 
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
@@ -21,7 +21,7 @@ root.render(
     <CssBaseline enableColorScheme />
     <Stack height="100vh">
       <TitleBar />
-      <Editor />
+      <MainStack />
     </Stack>
     {/* <Editor code='12'/> */}
     {/* <Button id='open-file' onclick={handleClick}>Open File</Button> */}
