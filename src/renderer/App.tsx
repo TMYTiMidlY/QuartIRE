@@ -57,68 +57,68 @@
 //   );
 // }
 
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  TextField,
-} from '@mui/material';
-import { useState, useEffect, useRef } from 'react';
+// import {
+//   Button,
+//   Dialog,
+//   DialogActions,
+//   DialogContent,
+//   DialogContentText,
+//   DialogTitle,
+//   TextField,
+// } from '@mui/material';
+// import { useState, useEffect, useRef } from 'react';
 
-export default function FormDialog() {
-  const [open, setOpen] = useState(false);
+// export default function FormDialog() {
+//   const [open, setOpen] = useState(false);
 
-  const inputRef = useRef<HTMLInputElement>(null);
+//   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (open) {
-      inputRef.current?.focus();
-    }
-  }, [open]);
+//   useEffect(() => {
+//     if (open) {
+//       inputRef.current?.focus();
+//     }
+//   }, [open]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+//   const handleClickOpen = () => {
+//     setOpen(true);
+//   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+//   const handleClose = () => {
+//     setOpen(false);
+//   };
 
-  return (
-    <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open form dialog
-      </Button>
-      <Dialog open={open} onClose={handleClose} keepMounted>
-        <DialogTitle>Subscribe</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
-          </DialogContentText>
-          <TextField
-            inputRef={inputRef}
-            margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Subscribe</Button>
-        </DialogActions>
-      </Dialog>
-      {/* <Table /> */}
-      {/* <Sample /> */}
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <Button variant="outlined" onClick={handleClickOpen}>
+//         Open form dialog
+//       </Button>
+//       <Dialog open={open} onClose={handleClose} keepMounted>
+//         <DialogTitle>Subscribe</DialogTitle>
+//         <DialogContent>
+//           <DialogContentText>
+//             To subscribe to this website, please enter your email address here.
+//             We will send updates occasionally.
+//           </DialogContentText>
+//           <TextField
+//             inputRef={inputRef}
+//             margin="dense"
+//             id="name"
+//             label="Email Address"
+//             type="email"
+//             fullWidth
+//             variant="standard"
+//           />
+//         </DialogContent>
+//         <DialogActions>
+//           <Button onClick={handleClose}>Cancel</Button>
+//           <Button onClick={handleClose}>Subscribe</Button>
+//         </DialogActions>
+//       </Dialog>
+//       {/* <Table /> */}
+//       {/* <Sample /> */}
+//     </div>
+//   );
+// }
 
 
 // import { HyperFormula } from 'hyperformula';
