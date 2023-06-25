@@ -68,23 +68,26 @@ click G "https://code.visualstudio.com/"
 
 ```mermaid
 graph LR
-A(renderer 进程)  --核心--> B((React)) --UI库--> B1((MaterialUI))
+A(renderer 进程)  --框架--> B((React)) --UI库--> B1((MaterialUI))
 B --后缀--> B2(.tsx)
 A --代码编辑器--> C((Monaco Editor)) --> C1(编辑Markdown)
 C --> C2(编辑LaTeX)
-A --md解析--> D((markdown-it)) --> D1(展示解析好的HTML)
+A --LaTeX实时渲染--> D((LaTeX.js)) --数学公式--> D1((KaTeX))
 A --类excel支持--> E((handsontable)) --> E1(Excel函数)
 A --绘制图表--> F((Echarts)) --替代方案--> F1((plotly))
 F --替代方案--> F2((highcharts))
-A --PDF展示--> G((PDF.js))
+A --md解析--> G((markdown-it)) --数学公式--> D1
+A --PDF展示--> H((PDF.js))
 
 click B "https://react.docschina.org/"
 click B1 "https://mui.com/"
 click C "https://microsoft.github.io/monaco-editor/"
-click D "https://github.com/markdown-it/markdown-it"
+click D "https://latex.js.org/"
+click D1 "https://katex.org/"
 click E "https://handsontable.com/docs/react-data-grid/"
 click F "https://echarts.apache.org/zh/index.html"
 click F1 "https://plotly.com/javascript/"
 click F2 "https://www.hcharts.cn/demo/highcharts"
-click G "https://gitcode.gitcode.host/docs-cn/pdf.js-docs-cn/index.html"
+click G "https://github.com/markdown-it/markdown-it"
+click H "https://gitcode.gitcode.host/docs-cn/pdf.js-docs-cn/index.html"
 ```
